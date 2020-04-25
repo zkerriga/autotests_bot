@@ -1,4 +1,4 @@
-config.ini
-my_account.session*
+config*
+*.session*
 __pycache__
 important_info
