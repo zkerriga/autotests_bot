@@ -1,4 +1,5 @@
 config*
+log*
 *.session*
 __pycache__
 important_info
