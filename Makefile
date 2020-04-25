@@ -5,33 +5,33 @@
 #     By: zkerriga                                                 >^,^<     	  #
 #                                                                   / \     	  #
 #     Created: 2020-04-25 10:43:28 by zkerriga                     (___)__  	  #
-#     Updated: 2020-04-25 22:06:51 by zkerriga                              	  #
+#     Updated: 2020-04-25 22:20:21 by zkerriga                              	  #
 #                                                                             	  #
 # ******************************************************************************* #
 
-TEST0 = test.py
-TEST1 = test1.py
-
-all: backup 0 1 2
+all: backup know want need
 	@echo -e "\n\033[32m[+] All tests complite! Check out log.\033[0m"
 
 backup:
 	@touch log
+	@rm -f log_backup
 	@mv log log_backup 
 
-0:
-	@echo -e "\n\033[32m[+] Start test0!\033[0m"
-	@python3 $(TEST0)
+want:
+	@echo -e "\n\033[32m[+] Start want test!\033[0m"
+	@python3 want.py
 	@echo -e "\n\033[32m[+] Test0 comlite!\033[0m"
 
-1:
-	@echo -e "\n\033[32m[+] Start test1!\033[0m"
-	@python3 $(TEST1)
+know:
+	@echo -e "\n\033[32m[+] Start know test!\033[0m"
+	@python3 know.py
 	@echo -e "\n\033[32m[+] Test1 comlite!\033[0m"
 
-2:
-	@echo -e "\n\033[32m[+] Start test1!\033[0m"
-	
+need:
+	@echo -e "\n\033[32m[+] Start need test!\033[0m"
+	@python3 need.py
+	@echo -e "\n\033[32m[+] Test2 comlite!\033[0m"
+
 clean:
 	@rm -f *.session*
 	@echo -e "\n\033[32m[+] Cleaned!\033[0m"
