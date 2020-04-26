@@ -5,7 +5,7 @@
 #     By: zkerriga                                                 >^,^<     	  #
 #                                                                   / \     	  #
 #     Created: 2020-04-25 22:20:56 by zkerriga                     (___)__  	  #
-#     Updated: 2020-04-25 23:28:52 by zkerriga                              	  #
+#     Updated: 2020-04-26 11:48:20 by zkerriga                              	  #
 #                                                                             	  #
 # ******************************************************************************* #
 
@@ -72,7 +72,7 @@ async def handler(event):
 	logging.info('[-] Need help -> Another -> Geo <- Not sended')
 	print('[+] Need help -> Another -> Geo')
 	print('[-] Need help -> Another -> Geo <- Not sended')
-	await client.send_message(TEST_BOT, geo_point=(30.379251039815593, 59.80547555591638))
+	# await client.send_message(TEST_BOT, geo_point=(30.379251039815593, 59.80547555591638))
 	await client.send_message(TEST_BOT, 'Отмена')
 
 @client.on(events.NewMessage(pattern=r'Чем еще я могу быть полезен.*'))
