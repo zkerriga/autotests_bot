@@ -5,7 +5,7 @@
 #     By: zkerriga                                                 >^,^<     	  #
 #                                                                   / \     	  #
 #     Created: 2020-04-25 18:00:43 by zkerriga                     (___)__  	  #
-#     Updated: 2020-04-25 22:16:14 by zkerriga                              	  #
+#     Updated: 2020-04-27 17:44:31 by zkerriga                              	  #
 #                                                                             	  #
 # ******************************************************************************* #
 
@@ -112,5 +112,27 @@ async def handler(event):
 	flag = True
 	await client.send_message(TEST_BOT, GOTIT)
 
+async def main():
+	print('[+] Start program')
+	await client.send_message(TEST_BOT, '/start')
+
 client.start()
+async def main():
+	print('[+] Start program')
+	await client.send_message(TEST_BOT, '/start')
+
+client.start()
+client.loop.run_until_complete(main())
 client.run_until_disconnected()
+
+# async def main():
+# 	print('[+] Start program')
+# 	await client.send_message(TEST_BOT, '/start')
+# 	time.sleep(20)
+# 	if flag:
+# 		print('[+] Exit program')
+# 	else:
+# 		print('[-] Error! Check up the log file!')
+
+# client.start()
+# client.loop.run_until_complete(main())
