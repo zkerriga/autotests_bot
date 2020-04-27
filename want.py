@@ -5,20 +5,22 @@
 #     By: zkerriga                                                 >^,^<     	  #
 #                                                                   / \     	  #
 #     Created: 2020-04-25 10:11:47 by zkerriga                     (___)__  	  #
-#     Updated: 2020-04-25 22:15:37 by zkerriga                              	  #
+#     Updated: 2020-04-27 18:45:45 by zkerriga                              	  #
 #                                                                             	  #
 # ******************************************************************************* #
 
 from telethon import TelegramClient, events 
 from config import api_id, api_hash
+import asyncio
 import logging
- 
+
 logging.basicConfig(filename='log', level=logging.INFO)
 
 TEST_BOT = 1103314091
 BACK = 'Вернуться'
 GOTIT = 'Понятно'
 flag = False
+start_flag = True
 want_to_help = [ BACK, 'Поддержать НКО и местные инициативы',
 				'Распространить полезную информацию',
 				'Стать волонтером', 'Обратная связь']
@@ -28,12 +30,6 @@ who_need_help = [BACK, 'Уязвимым людям', 'Медицинским р
 				'Малому бизнесу и культуре']
 
 client = TelegramClient('zkerriga', api_id, api_hash)
-
-@client.on(events.NewMessage(outgoing=True, pattern=r'/start'))
-async def handler(event):
-	logging.info('[+] Bot started')
-	print('[+] Bot started')
-	await client.send_message(TEST_BOT, 'Хочу помочь')
 
 @client.on(events.NewMessage(pattern=r'Отлично! Вот несколько вариантов\.'))
 async def handler(event):
@@ -111,10 +107,27 @@ async def handler(event):
 
 @client.on(events.NewMessage(pattern=r'Чем еще я могу быть полезен.*'))
 async def handler(event):
+	global start_flag
+	if start_flag:
+		logging.info('[+] Bot started')
+		print('[+] Bot started')
+		start_flag = False
+		await client.send_message(TEST_BOT, 'Хочу помочь')
 	if flag:
 		logging.info('[+] SUCCESS')
 		print('[+] SUCCESS\n')
 		exit(0)
 
+async def main():
+	print('[+] Start program')
+	await client.send_message(TEST_BOT, '/start')
+	try:
+		await asyncio.gather(asyncio.wait_for(client.run_until_disconnected(), timeout=30))
+	except asyncio.TimeoutError:
+		if flag:
+			print('[+] Exit program')
+		else:
+			print('[-] Error! Check up the log file!')
+
 client.start()
-client.run_until_disconnected()
+client.loop.run_until_complete(main())

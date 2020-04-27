@@ -5,12 +5,13 @@
 #     By: zkerriga                                                 >^,^<     	  #
 #                                                                   / \     	  #
 #     Created: 2020-04-25 22:20:56 by zkerriga                     (___)__  	  #
-#     Updated: 2020-04-26 11:48:20 by zkerriga                              	  #
+#     Updated: 2020-04-27 18:43:55 by zkerriga                              	  #
 #                                                                             	  #
 # ******************************************************************************* #
 
 from telethon import TelegramClient, events 
 from config import api_id, api_hash
+import asyncio
 import logging
  
 logging.basicConfig(filename='log', level=logging.INFO)
@@ -19,6 +20,7 @@ TEST_BOT = 1103314091
 BACK = 'Вернуться'
 GOTIT = 'Понятно'
 flag = False
+start_flag = True
 need_help = [ BACK, 'Мои права нарушают', 'Другая помощь']
 another_help = [BACK, 'Связаться с волонтерами', 'Психологическая помощь',
 				'Помощь врачам', 'Продукты питания']
@@ -77,7 +79,13 @@ async def handler(event):
 
 @client.on(events.NewMessage(pattern=r'Чем еще я могу быть полезен.*'))
 async def handler(event):
-	if flag:
+	global start_flag
+	if start_flag:
+		logging.info('[+] Bot started')
+		print('[+] Bot started')
+		start_flag = False
+		await client.send_message(TEST_BOT, 'Нужна помощь')
+	elif flag:
 		logging.info('[+] SUCCESS')
 		print('[+] SUCCESS\n')
 		exit(0)
@@ -146,5 +154,16 @@ async def handler(event):
 	flag = True
 	await client.send_message(TEST_BOT, GOTIT)
 
+async def main():
+	print('[+] Start program')
+	await client.send_message(TEST_BOT, '/start')
+	try:
+		await asyncio.gather(asyncio.wait_for(client.run_until_disconnected(), timeout=30))
+	except asyncio.TimeoutError:
+		if flag:
+			print('[+] Exit program')
+		else:
+			print('[-] Error! Check up the log file!')
+
 client.start()
-client.run_until_disconnected()
+client.loop.run_until_complete(main())

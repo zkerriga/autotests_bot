@@ -5,7 +5,7 @@
 #     By: zkerriga                                                 >^,^<     	  #
 #                                                                   / \     	  #
 #     Created: 2020-04-25 18:00:43 by zkerriga                     (___)__  	  #
-#     Updated: 2020-04-27 18:21:00 by zkerriga                              	  #
+#     Updated: 2020-04-27 18:42:08 by zkerriga                              	  #
 #                                                                             	  #
 # ******************************************************************************* #
 
@@ -27,12 +27,6 @@ prevention_measures = [	 BACK, 'Как не заразиться?', 'Как не
 						'Когда стоит вызывать врача?']
 
 client = TelegramClient('zkerriga', api_id, api_hash, timeout=5)
-
-@client.on(events.NewMessage(outgoing=True, pattern=r'/start'))
-async def handler(event):
-	logging.info('[+] Bot started')
-	print('[+] Bot started')
-	await client.send_message(TEST_BOT, 'Полезно знать')
 
 @client.on(events.NewMessage(pattern=r'Что вам подсказать.*'))
 async def handler(event):
@@ -117,12 +111,11 @@ async def main():
 	print('[+] Start program')
 	await client.send_message(TEST_BOT, '/start')
 
-client.start()
 async def main():
 	print('[+] Start program')
 	await client.send_message(TEST_BOT, '/start')
 	try:
-		await asyncio.gather(asyncio.wait_for(client.run_until_disconnected(), timeout=16))
+		await asyncio.gather(asyncio.wait_for(client.run_until_disconnected(), timeout=30))
 	except asyncio.TimeoutError:
 		if flag:
 			print('[+] Exit program')
@@ -131,18 +124,3 @@ async def main():
 
 client.start()
 client.loop.run_until_complete(main())
-
-
-# client.run_until_disconnected()
-
-# async def main():
-# 	print('[+] Start program')
-# 	await client.send_message(TEST_BOT, '/start')
-# 	time.sleep(20)
-# 	if flag:
-# 		print('[+] Exit program')
-# 	else:
-# 		print('[-] Error! Check up the log file!')
-
-# client.start()
-# client.loop.run_until_complete(main())
