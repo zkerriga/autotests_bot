@@ -5,11 +5,12 @@
 #     By: zkerriga                                                 >^,^<     	  #
 #                                                                   / \     	  #
 #     Created: 2020-04-25 18:00:43 by zkerriga                     (___)__  	  #
-#     Updated: 2020-04-27 17:44:31 by zkerriga                              	  #
+#     Updated: 2020-04-27 18:21:00 by zkerriga                              	  #
 #                                                                             	  #
 # ******************************************************************************* #
 
 from telethon import TelegramClient, events 
+import asyncio
 from config import api_id, api_hash
 import logging
  
@@ -25,7 +26,7 @@ legal_advice = [ BACK, 'Что будет, если нарушить каран�
 prevention_measures = [	 BACK, 'Как не заразиться?', 'Как не заразить окружающих?',
 						'Когда стоит вызывать врача?']
 
-client = TelegramClient('zkerriga', api_id, api_hash)
+client = TelegramClient('zkerriga', api_id, api_hash, timeout=5)
 
 @client.on(events.NewMessage(outgoing=True, pattern=r'/start'))
 async def handler(event):
@@ -120,10 +121,19 @@ client.start()
 async def main():
 	print('[+] Start program')
 	await client.send_message(TEST_BOT, '/start')
+	try:
+		await asyncio.gather(asyncio.wait_for(client.run_until_disconnected(), timeout=16))
+	except asyncio.TimeoutError:
+		if flag:
+			print('[+] Exit program')
+		else:
+			print('[-] Error! Check up the log file!')
 
 client.start()
 client.loop.run_until_complete(main())
-client.run_until_disconnected()
+
+
+# client.run_until_disconnected()
 
 # async def main():
 # 	print('[+] Start program')
